@@ -51,8 +51,9 @@ const PatientLifestyleQuestionnaire: React.FC<
     let ageGroup: string = "";
     if (props.patientAge >= 16 && props.patientAge <= 21) ageGroup = "A";
     else if (props.patientAge >= 22 && props.patientAge <= 40) ageGroup = "B";
-    else if (props.patientAge >= 41 && props.patientAge < 64) ageGroup = "C";
-    else if (props.patientAge >= 64) ageGroup = "D";
+    else if (props.patientAge >= 41 && props.patientAge < 65) ageGroup = "C";
+    else if (props.patientAge >= 65) ageGroup = "D";
+    else throw new Error("Invalid age supplied");
     console.log("Making them age group: ", ageGroup);
 
     let score: number = 0;

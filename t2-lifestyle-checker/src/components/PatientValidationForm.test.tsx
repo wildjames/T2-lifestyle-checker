@@ -4,7 +4,6 @@ import axios from "axios";
 import { addMonths, subYears } from "date-fns";
 
 import PatientValidationForm from "./PatientValidationForm";
-import { calculateAge } from "./utils";
 
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
