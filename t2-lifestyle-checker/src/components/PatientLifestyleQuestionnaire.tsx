@@ -36,16 +36,16 @@ const PatientLifestyleQuestionnaire: React.FC<
 
   const question_keys: QuestionKeys[] = ["q1", "q2", "q3"];
 
+  // I key this by letters rather than strings, for extensibility
+  const scores: Scores = {
+    A: { q1: 1, q2: 2, q3: 1 },
+    B: { q1: 2, q2: 2, q3: 3 },
+    C: { q1: 3, q2: 2, q3: 2 },
+    D: { q1: 3, q2: 3, q3: 1 },
+  };
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
-    // I key this by letters rather than strings, for extensibility
-    const scores: Scores = {
-      A: { q1: 1, q2: 2, q3: 1 },
-      B: { q1: 2, q2: 2, q3: 3 },
-      C: { q1: 3, q2: 2, q3: 2 },
-      D: { q1: 3, q2: 3, q3: 1 },
-    };
 
     console.log("Patient supplied age: ", props.patientAge);
     let ageGroup: string = "";

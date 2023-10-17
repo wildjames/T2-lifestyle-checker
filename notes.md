@@ -20,3 +20,10 @@ Date parsing is slightly tricky, since we're using UK dates and the `Date` objec
 Wrote some tests for the form. Only a handful though, as I've not as much time as I'd like - just enough to get a flavour for it. I think there needs to be more coverage of success conditions, and age verification, in particular. I may come back to this part later.
 Partially ignore that, I added the age verification tests anyway. They're important.
 
+### Patient lifestyle questionnaire
+
+Second component. If this was more complex, I would set up a dev switch to just dump me straight in the component, but for now I've already memorised John Doe's details, so I'll leave it. 
+
+Simple form. I used lists and dictionaries to store the questions, answers, and scores so that adding new ones should be a bit easier. I think this one turned out quite nicely, actually, I'm pretty pleased with the structure here. However, some thoughts. It can only handle yes/no questions. This is fine for the given questions, but if this is extended then some tweaks will be necessary to add other user inputs - or even just other dropdown options. Also, the upper age threshold is 64 - I would have expected 65, so normally I would check that this isn't a typo. Finally, I corrected a typo in the message that is given back to the user, "you" to "your".
+
+No tests yet!! I'm still getting the hang of React tests, so I'm leaving them to where I have something that has basic functionality, then I'll test around it. Might be tricky to test scores, I'll hand-craft a few expected outcomes.
