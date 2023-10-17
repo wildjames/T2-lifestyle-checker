@@ -1,5 +1,6 @@
 import React, { useState, FormEvent } from "react";
 import axios from "axios";
+import { parseDate, calculateAge } from "./utils";
 
 const PatientValidationForm: React.FC = () => {
   const [nhsNumber, setNhsNumber] = useState("");
@@ -13,9 +14,9 @@ const PatientValidationForm: React.FC = () => {
     setErrorMessage("");
 
     // The NHS number is a 10-digit number. Strip out spaces, trim the string, and check this
-    const cleaned_nhsNumber = nhsNumber.replace(/\s/g, "").trim()
+    const cleaned_nhsNumber = nhsNumber.replace(/\s/g, "").trim();
     // Then use a quick bit of regex to ensure it's a 10-digit number
-    const nhsNumberRegex = /^\d{10}$/;
+    const nhsNumberRegex = /^\d{9}$/;
     if (!nhsNumberRegex.test(cleaned_nhsNumber)) {
       setErrorMessage("Please enter a valid NHS number");
       return;
@@ -25,35 +26,56 @@ const PatientValidationForm: React.FC = () => {
       // Provide the API token in the header
       // TODO: potentially worth moving to an /api/ folder and an axiosConfig file
       const apiKey = process.env.REACT_APP_API_SUBSCRIPTION_KEY;
+      if (!apiKey) {
+        throw new Error("API subscription key not found");
+      }
       axios.defaults.headers.common["Ocp-Apim-Subscription-Key"] = apiKey;
 
       const response = await axios.get(
         `https://al-tech-test-apim.azure-api.net/tech-test/t2/patients/${nhsNumber}`
       );
 
+      const response_surname = response.data.name
+        .split(",")[0]
+        .trim()
+        .toUpperCase();
+      // Since dates in less civilised countries are mm-dd-yyyy, we need to parse the date from UK format.
+      const response_dob = parseDate(response.data.born);
+
+      const user_surname = surname.trim().toUpperCase();
+      const user_dob = new Date(dob);
+
+      const user_age = calculateAge(response_dob);
+      console.log("The user reports being " + user_age + " years old");
+
       // Check the response data matches the inputted data
       if (
         // Does the name match?
-        response.data.name.split(",")[1].trim().toUpperCase() !==
-          surname.toUpperCase() ||
-
+        response_surname !== user_surname ||
         // Does the DOB match?
-        new Date(response.data.born).toLocaleDateString() !==
-          new Date(dob).toLocaleDateString()
+        response_dob.toLocaleDateString() !== user_dob.toLocaleDateString()
       ) {
         setErrorMessage("Your details could not be found");
-        
-      } else if (calculateAge(response.data.born) < 16) {
+        if (response_surname !== user_surname) {
+          console.error("Surname mismatch");
+          console.log("Server says:", response_surname);
+          console.log("User says:", user_surname);
+        }
+        if (response_dob !== user_dob) {
+          console.error("DOB mismatch");
+          console.log("Server says: ", response_dob);
+          console.log("User says:", user_dob);
+        }
+      } else if (user_age < 16) {
         setErrorMessage("You are not eligible for this service");
-      
       } else {
+        console.log(response);
         // Proceed to the next part (Lifestyle Questions)
         // TODO: This will open the next component (redirect, or swap active component?)
       }
     } catch (error: any) {
       if (error.response && error.response.status === 404) {
         setErrorMessage("Your details could not be found");
-
       } else {
         setErrorMessage("An unexpected error occurred");
       }
@@ -110,12 +132,3 @@ const PatientValidationForm: React.FC = () => {
 };
 
 export default PatientValidationForm;
-
-// Utility function to calculate age from DOB
-const calculateAge = (dob: string): number => {
-  const birthDate = new Date(dob);
-  const ageDifference = Date.now() - birthDate.getTime();
-  const ageDate = new Date(ageDifference);
-
-  return Math.abs(ageDate.getUTCFullYear() - 1970);
-};
