@@ -71,12 +71,12 @@ const PatientValidationForm: React.FC = () => {
       ) {
         setErrorMessage("Your details could not be found");
         if (response_surname !== user_surname) {
-          console.error("Surname mismatch");
+          console.log("Surname mismatch");
           console.log("Server says:", response_surname);
           console.log("User says:", user_surname);
         }
         if (response_dob !== user_dob) {
-          console.error("DOB mismatch");
+          console.log("DOB mismatch");
           console.log("Server says: ", response_dob);
           console.log("User says:", user_dob);
         }
