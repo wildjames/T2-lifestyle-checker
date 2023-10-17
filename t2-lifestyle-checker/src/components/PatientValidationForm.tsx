@@ -2,7 +2,11 @@ import React, { useState, FormEvent } from "react";
 import axios from "axios";
 import { parseDate, calculateAge } from "./utils";
 
-const PatientValidationForm: React.FC = () => {
+interface PatientValidationFormProps {
+  onValidationSuccess: (patientAge: number) => void;
+}
+
+const PatientValidationForm: React.FC<PatientValidationFormProps> = (props) => {
   const [nhsNumber, setNhsNumber] = useState("");
   const [surname, setSurname] = useState("");
   const [dob, setDob] = useState("");
@@ -86,7 +90,7 @@ const PatientValidationForm: React.FC = () => {
         console.log(response);
         // Proceed to the next part (Lifestyle Questions)
         setErrorMessage("Validation successful");
-        // TODO: This will open the next component (redirect, or swap active component?)
+        props.onValidationSuccess(user_age);
       }
     } catch (error: any) {
       if (error.response && error.response.status === 404) {

@@ -9,13 +9,15 @@ import { calculateAge } from "./utils";
 jest.mock("axios");
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
+const handlePatientValidationSuccess = jest.fn();
+
 describe("PatientValidationForm", () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
   it("renders without crashing", () => {
-    render(<PatientValidationForm />);
+    render(<PatientValidationForm onValidationSuccess={handlePatientValidationSuccess}  />);
   });
 
   it.each([
@@ -26,7 +28,7 @@ describe("PatientValidationForm", () => {
   ])(
     "invalid NHS numbers should show an error message: %s",
     async (nhsNumber) => {
-      const { getByLabelText, getByText } = render(<PatientValidationForm />);
+      const { getByLabelText, getByText } = render(<PatientValidationForm onValidationSuccess={handlePatientValidationSuccess}  />);
       const nhsNumberInput = getByLabelText(/NHS Number:/i);
       const surnameInput = getByLabelText(/Surname:/i);
       const dobInput = getByLabelText(/Date of Birth:/i);
@@ -41,7 +43,7 @@ describe("PatientValidationForm", () => {
   );
 
   it("shows an error when the form is partially filled", async () => {
-    const { getByLabelText, getByText } = render(<PatientValidationForm />);
+    const { getByLabelText, getByText } = render(<PatientValidationForm onValidationSuccess={handlePatientValidationSuccess}  />);
     const nhsInput = getByLabelText(/NHS Number:/i);
     const surnameInput = getByLabelText(/Surname:/i);
     const dobInput = getByLabelText(/Date of Birth:/i);
@@ -73,7 +75,7 @@ describe("PatientValidationForm", () => {
       data: { nhsNumber: "111222333", name: "DOE, John", born: "14-01-2005" },
     });
 
-    const { getByLabelText, getByText } = render(<PatientValidationForm />);
+    const { getByLabelText, getByText } = render(<PatientValidationForm onValidationSuccess={handlePatientValidationSuccess}  />);
     const nhsInput = getByLabelText(/NHS Number:/i);
     const surnameInput = getByLabelText(/Surname:/i);
     const dobInput = getByLabelText(/Date of Birth:/i);
@@ -104,7 +106,7 @@ describe("PatientValidationForm", () => {
       },
     });
 
-    const { getByLabelText, getByText } = render(<PatientValidationForm />);
+    const { getByLabelText, getByText } = render(<PatientValidationForm onValidationSuccess={handlePatientValidationSuccess}  />);
     const nhsInput = getByLabelText(/NHS Number:/i);
     const surnameInput = getByLabelText(/Surname:/i);
     const dobInput = getByLabelText(/Date of Birth:/i);
@@ -128,7 +130,7 @@ describe("PatientValidationForm", () => {
       data: { nhsNumber: "111222333", name: "DOE, John", born: "14-01-2010" }, // 13 years old (TODO: Future proof this)
     });
 
-    const { getByLabelText, getByText } = render(<PatientValidationForm />);
+    const { getByLabelText, getByText } = render(<PatientValidationForm onValidationSuccess={handlePatientValidationSuccess}  />);
     const nhsInput = getByLabelText(/NHS Number:/i);
     const surnameInput = getByLabelText(/Surname:/i);
     const dobInput = getByLabelText(/Date of Birth:/i);
@@ -146,7 +148,7 @@ describe("PatientValidationForm", () => {
       data: { nhsNumber: "111222333", name: "DOE, John", born: "14-01-2005" },
     });
 
-    const { getByLabelText, getByText } = render(<PatientValidationForm />);
+    const { getByLabelText, getByText } = render(<PatientValidationForm onValidationSuccess={handlePatientValidationSuccess}  />);
     const nhsInput = getByLabelText(/NHS Number:/i);
     const surnameInput = getByLabelText(/Surname:/i);
     const dobInput = getByLabelText(/Date of Birth:/i);
