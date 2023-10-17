@@ -32,4 +32,4 @@ No tests yet!! I'm still getting the hang of React tests, so I'm leaving them to
 
 Writing tests, noticed that the age bands are "41-65", "64+". Again, I would usually clarify with whoever wrote the spec, but I will assume this is supposed to be 41-65 and 65+.
 
-Some tests written. Needs more coverage.
+Some tests written. Needs more coverage. However, I'm calling it here or the project will get away from me.
