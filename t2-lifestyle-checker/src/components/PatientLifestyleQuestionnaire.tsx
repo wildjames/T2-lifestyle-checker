@@ -4,6 +4,10 @@ interface PatientLifestyleQuestionnaireProps {
   patientAge: number;
 }
 
+type AgeBoundaries = {
+  [ageGroup: string]: [number, number];
+};
+
 type ScoreValues = {
   q1: number;
   q2: number;
@@ -28,13 +32,20 @@ const PatientLifestyleQuestionnaire: React.FC<
   const [answers, setAnswers] = useState<Answers>({ q1: "", q2: "", q3: "" });
   const [resultMessage, setResultMessage] = useState("");
 
+  const ageBoundaries: AgeBoundaries = {
+    A: [16, 21],
+    B: [22, 40],
+    C: [41, 64],
+    D: [65, 999],
+  };
+
+  const question_keys: QuestionKeys[] = ["q1", "q2", "q3"];
+
   const questions = [
     "Do you smoke?",
     "Do you drink alcohol?",
     "Do you exercise regularly?",
   ];
-
-  const question_keys: QuestionKeys[] = ["q1", "q2", "q3"];
 
   // I key this by letters rather than strings, for extensibility
   const scores: Scores = {
@@ -50,7 +61,7 @@ const PatientLifestyleQuestionnaire: React.FC<
     if (props.patientAge < 16) {
       setResultMessage("Invalid age supplied");
     }
-  }, []);
+  }, [props.patientAge]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -63,11 +74,14 @@ const PatientLifestyleQuestionnaire: React.FC<
     }
 
     let ageGroup: string = "";
-    if (props.patientAge >= 16 && props.patientAge <= 21) ageGroup = "A";
-    else if (props.patientAge >= 22 && props.patientAge <= 40) ageGroup = "B";
-    else if (props.patientAge >= 41 && props.patientAge < 65) ageGroup = "C";
-    else if (props.patientAge >= 65) ageGroup = "D";
-    console.log("Making them age group: ", ageGroup);
+    Object.keys(ageBoundaries).forEach((group) => {
+      const [minAge, maxAge] = ageBoundaries[group];
+      if (props.patientAge >= minAge && props.patientAge <= maxAge) {
+        ageGroup = group;
+      }
+    });
+
+    console.log(`Making them age group ${ageGroup}`);
 
     let score: number = 0;
     score += answers.q1 === "yes" ? scores[ageGroup].q1 : 0;

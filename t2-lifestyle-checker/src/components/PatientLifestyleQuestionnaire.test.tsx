@@ -51,8 +51,7 @@ describe("PatientLifestyleQuestionnaire", () => {
 
       // Check the logs
       expect(consoleSpy).toHaveBeenCalledWith(
-        "Making them age group: ",
-        expected_group
+        `Making them age group ${expected_group}`
       );
     }
   );
