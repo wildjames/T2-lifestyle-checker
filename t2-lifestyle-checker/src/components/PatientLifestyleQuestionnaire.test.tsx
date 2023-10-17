@@ -16,6 +16,12 @@ describe("PatientLifestyleQuestionnaire", () => {
     ).toBeInTheDocument();
   });
 
+  it("throws an error when age is too low", () => {
+    expect(() => {
+      render(<PatientLifestyleQuestionnaire patientAge={15} />);
+    }).toThrow("Invalid age supplied");
+  });
+
   it.each([
     [16, "A"],
     [21, "A"],

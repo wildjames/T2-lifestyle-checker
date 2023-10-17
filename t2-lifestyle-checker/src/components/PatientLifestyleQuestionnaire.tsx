@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
 
 interface PatientLifestyleQuestionnaireProps {
   patientAge: number;
@@ -43,6 +43,13 @@ const PatientLifestyleQuestionnaire: React.FC<
     C: { q1: 3, q2: 2, q3: 2 },
     D: { q1: 3, q2: 3, q3: 1 },
   };
+
+  // When the component loads, check that the age is over 16. If it isn't, something has gone wrong and we need to throw an error
+  useEffect(() => {
+    if (props.patientAge < 16) {
+      throw new Error("Invalid age supplied");
+    }
+  } , []);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
