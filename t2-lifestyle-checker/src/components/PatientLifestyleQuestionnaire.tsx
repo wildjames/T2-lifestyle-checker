@@ -44,23 +44,29 @@ const PatientLifestyleQuestionnaire: React.FC<
     D: { q1: 3, q2: 3, q3: 1 },
   };
 
-  // When the component loads, check that the age is over 16. If it isn't, something has gone wrong and we need to throw an error
+  // When the component loads, check that the age is over 16.
+  // If it isn't, something has gone wrong.
   useEffect(() => {
     if (props.patientAge < 16) {
-      throw new Error("Invalid age supplied");
+      setResultMessage("Invalid age supplied");
     }
-  } , []);
+  }, []);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     console.log("Patient supplied age: ", props.patientAge);
+
+    if (props.patientAge < 16) {
+      console.error("Invalid age supplied");
+      return;
+    }
+
     let ageGroup: string = "";
     if (props.patientAge >= 16 && props.patientAge <= 21) ageGroup = "A";
     else if (props.patientAge >= 22 && props.patientAge <= 40) ageGroup = "B";
     else if (props.patientAge >= 41 && props.patientAge < 65) ageGroup = "C";
     else if (props.patientAge >= 65) ageGroup = "D";
-    else throw new Error("Invalid age supplied");
     console.log("Making them age group: ", ageGroup);
 
     let score: number = 0;
@@ -103,7 +109,11 @@ const PatientLifestyleQuestionnaire: React.FC<
       ))}
 
       <div>
-        <button type="submit" className="nhsuk-button">
+        <button
+          type="submit"
+          className="nhsuk-button"
+          disabled={props.patientAge < 16}
+        >
           Submit
         </button>
       </div>

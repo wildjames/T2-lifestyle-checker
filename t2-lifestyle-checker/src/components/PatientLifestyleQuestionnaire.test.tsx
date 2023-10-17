@@ -17,9 +17,8 @@ describe("PatientLifestyleQuestionnaire", () => {
   });
 
   it("throws an error when age is too low", () => {
-    expect(() => {
-      render(<PatientLifestyleQuestionnaire patientAge={15} />);
-    }).toThrow("Invalid age supplied");
+    render(<PatientLifestyleQuestionnaire patientAge={15} />);
+    expect(screen.getByText(/Invalid age supplied/i)).toBeInTheDocument();
   });
 
   it.each([
@@ -60,35 +59,35 @@ describe("PatientLifestyleQuestionnaire", () => {
 
   it.each([
     // Points for "yes" for q1 and q2, "no" for q3
-    // A group: 1, 2, 1 
-    [18, "yes", "yes", "no", true],      // Score: 4
-    [18, "yes", "no", "yes", false],     // Score: 1
-    [18, "no", "yes", "yes", false],     // Score: 2
-    [18, "yes", "no", "no", false],      // Score: 2
-    [18, "no", "yes", "no", false],      // Score: 3
-    [18, "no", "no", "yes", false],      // Score: 0
+    // A group: 1, 2, 1
+    [18, "yes", "yes", "no", true], // Score: 4
+    [18, "yes", "no", "yes", false], // Score: 1
+    [18, "no", "yes", "yes", false], // Score: 2
+    [18, "yes", "no", "no", false], // Score: 2
+    [18, "no", "yes", "no", false], // Score: 3
+    [18, "no", "no", "yes", false], // Score: 0
     // B  group: 2, 2, 3
-    [25, "yes", "yes", "no", true],      // Score: 7
-    [25, "yes", "no", "yes", false],     // Score: 2
-    [25, "no", "yes", "yes", false],     // Score: 2
-    [25, "yes", "no", "no", true],       // Score: 5
-    [25, "no", "yes", "no", true],       // Score: 5
-    [25, "no", "no", "yes", false],      // Score: 3
+    [25, "yes", "yes", "no", true], // Score: 7
+    [25, "yes", "no", "yes", false], // Score: 2
+    [25, "no", "yes", "yes", false], // Score: 2
+    [25, "yes", "no", "no", true], // Score: 5
+    [25, "no", "yes", "no", true], // Score: 5
+    [25, "no", "no", "yes", false], // Score: 3
     // C group: 3, 2, 2
-    [50, "yes", "yes", "no", true],      // Score: 7
-    [50, "yes", "no", "yes", false],     // Score: 3
-    [50, "no", "yes", "yes", false],     // Score: 2
-    [50, "yes", "no", "no", true],       // Score: 5
-    [50, "no", "yes", "no", true],       // Score: 4
-    [50, "no", "no", "yes", false],      // Score: 2
+    [50, "yes", "yes", "no", true], // Score: 7
+    [50, "yes", "no", "yes", false], // Score: 3
+    [50, "no", "yes", "yes", false], // Score: 2
+    [50, "yes", "no", "no", true], // Score: 5
+    [50, "no", "yes", "no", true], // Score: 4
+    [50, "no", "no", "yes", false], // Score: 2
     // D group: 3, 3, 1
-    [70, "yes", "yes", "no", true],      // Score: 7
-    [70, "yes", "no", "yes", false],     // Score: 3
-    [70, "no", "yes", "yes", false],     // Score: 3
-    [70, "yes", "no", "no", true],       // Score: 4
-    [70, "no", "yes", "no", true],       // Score: 4
-    [70, "no", "no", "yes", false],      // Score: 1
-])(
+    [70, "yes", "yes", "no", true], // Score: 7
+    [70, "yes", "no", "yes", false], // Score: 3
+    [70, "no", "yes", "yes", false], // Score: 3
+    [70, "yes", "no", "no", true], // Score: 4
+    [70, "no", "yes", "no", true], // Score: 4
+    [70, "no", "no", "yes", false], // Score: 1
+  ])(
     "calculates score correctly based on answers and age group. Age %s, answers: %s, %s, %s, expected score: %s",
     (age: number, a1: string, a2: string, a3: string, can_improve: Boolean) => {
       render(<PatientLifestyleQuestionnaire patientAge={age} />);
