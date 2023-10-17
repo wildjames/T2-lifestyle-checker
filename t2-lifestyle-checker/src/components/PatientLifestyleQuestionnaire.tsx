@@ -85,11 +85,8 @@ const PatientLifestyleQuestionnaire: React.FC<
 
     let score: number = 0;
     score += answers.q1 === "yes" ? scores[ageGroup].q1 : 0;
-    console.log("Score after q1: ", score);
     score += answers.q2 === "yes" ? scores[ageGroup].q2 : 0;
-    console.log("Score after q2: ", score);
     score += answers.q3 === "no" ? scores[ageGroup].q3 : 0;
-    console.log("Score after q3: ", score);
 
     console.log("Final score: ", score);
 
