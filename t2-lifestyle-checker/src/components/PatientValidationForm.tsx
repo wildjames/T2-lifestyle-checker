@@ -13,6 +13,20 @@ const PatientValidationForm: React.FC = () => {
     // Resetting the error message at each new submission
     setErrorMessage("");
 
+    // Check that the user has entered all the inputs
+    if (!nhsNumber) {
+      setErrorMessage("Please enter your NHS number");
+      return;
+    }
+    if (!surname) {
+      setErrorMessage("Please enter your surname");
+      return;
+    }
+    if (!dob) {
+      setErrorMessage("Please enter your date of birth");
+      return;
+    }
+
     // The NHS number is a 10-digit number. Strip out spaces, trim the string, and check this
     const cleaned_nhsNumber = nhsNumber.replace(/\s/g, "").trim();
     // Then use a quick bit of regex to ensure it's a 10-digit number
@@ -71,6 +85,7 @@ const PatientValidationForm: React.FC = () => {
       } else {
         console.log(response);
         // Proceed to the next part (Lifestyle Questions)
+        setErrorMessage("Validation successful");
         // TODO: This will open the next component (redirect, or swap active component?)
       }
     } catch (error: any) {
