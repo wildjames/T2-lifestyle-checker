@@ -138,10 +138,16 @@ const PatientValidationForm: React.FC<PatientValidationFormProps> = (props) => {
           className="nhsuk-input"
         />
       </div>
-      {errorMessage && <p className="nhsuk-error-message">{errorMessage}</p>}
-      <button type="submit" className="nhsuk-button">
-        Submit
-      </button>
+
+      <div>
+        <button type="submit" className="nhsuk-button">
+          Submit
+        </button>
+      </div>
+
+      <div>
+        {errorMessage && <p className="nhsuk-error-message">{errorMessage}</p>}
+      </div>
     </form>
   );
 };
