@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/T2-lifestyle-checker/t2-lifestyle-checker/static/css/main.e6c13ad2.css",
-    "main.js": "/T2-lifestyle-checker/t2-lifestyle-checker/static/js/main.2aa917b9.js",
-    "static/js/787.d8f56e3a.chunk.js": "/T2-lifestyle-checker/t2-lifestyle-checker/static/js/787.d8f56e3a.chunk.js",
-    "index.html": "/T2-lifestyle-checker/t2-lifestyle-checker/index.html",
-    "main.e6c13ad2.css.map": "/T2-lifestyle-checker/t2-lifestyle-checker/static/css/main.e6c13ad2.css.map",
-    "main.2aa917b9.js.map": "/T2-lifestyle-checker/t2-lifestyle-checker/static/js/main.2aa917b9.js.map",
-    "787.d8f56e3a.chunk.js.map": "/T2-lifestyle-checker/t2-lifestyle-checker/static/js/787.d8f56e3a.chunk.js.map"
+    "main.css": "/T2-lifestyle-checker/static/css/main.e6c13ad2.css",
+    "main.js": "/T2-lifestyle-checker/static/js/main.451223dd.js",
+    "static/js/787.d8f56e3a.chunk.js": "/T2-lifestyle-checker/static/js/787.d8f56e3a.chunk.js",
+    "index.html": "/T2-lifestyle-checker/index.html",
+    "main.e6c13ad2.css.map": "/T2-lifestyle-checker/static/css/main.e6c13ad2.css.map",
+    "main.451223dd.js.map": "/T2-lifestyle-checker/static/js/main.451223dd.js.map",
+    "787.d8f56e3a.chunk.js.map": "/T2-lifestyle-checker/static/js/787.d8f56e3a.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.2aa917b9.js"
+    "static/js/main.451223dd.js"
   ]
 }
