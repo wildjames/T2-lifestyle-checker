@@ -31,9 +31,9 @@ const PatientValidationForm: React.FC<PatientValidationFormProps> = (props) => {
       return;
     }
 
-    // The NHS number is a 10-digit number. Strip out spaces, trim the string, and check this
+    // The NHS number is a 9-digit number. Strip out spaces, trim the string, and check this
     const cleaned_nhsNumber = nhsNumber.replace(/\s/g, "").trim();
-    // Then use a quick bit of regex to ensure it's a 10-digit number
+    // Then use a quick bit of regex to ensure it's a 9-digit number
     const nhsNumberRegex = /^\d{9}$/;
     if (!nhsNumberRegex.test(cleaned_nhsNumber)) {
       setErrorMessage("Please enter a valid NHS number");
@@ -57,7 +57,7 @@ const PatientValidationForm: React.FC<PatientValidationFormProps> = (props) => {
         .split(",")[0]
         .trim()
         .toUpperCase();
-      // Since dates in less civilised countries are mm-dd-yyyy, we need to parse the date from UK format.
+      // Since dates in less civilised countries are yyyy-mm-dd, we need to parse the date from UK format.
       const response_dob = parseDate(response.data.born);
 
       const user_surname = surname.trim().toUpperCase();
@@ -76,13 +76,9 @@ const PatientValidationForm: React.FC<PatientValidationFormProps> = (props) => {
         setErrorMessage("Your details could not be found");
         if (response_surname !== user_surname) {
           console.log("Surname mismatch");
-          console.log("Server says:", response_surname);
-          console.log("User says:", user_surname);
         }
         if (response_dob !== user_dob) {
           console.log("DOB mismatch");
-          console.log("Server says: ", response_dob);
-          console.log("User says:", user_dob);
         }
       } else if (user_age < 16) {
         setErrorMessage("You are not eligible for this service");

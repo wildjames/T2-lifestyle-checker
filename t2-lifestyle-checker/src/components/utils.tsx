@@ -5,10 +5,16 @@ export const parseDate = (dateString: string): Date => {
 };
 
 export const calculateAge = (dob: Date): number => {
-    const today = new Date();
-    const timeDifference = today.getTime() - dob.getTime();
-    const ageInMilliseconds = new Date(timeDifference);
+  const today = new Date();
+
+  // Check if the date of birth is in the future
+  if (dob > today) {
+    return 0;
+  }
   
-    // UTC year "1970" is used as a base year to calculate the age
-    return Math.abs(ageInMilliseconds.getUTCFullYear() - 1970);
-  };
+  const timeDifference = today.getTime() - dob.getTime();
+  const ageInMilliseconds = new Date(timeDifference);
+
+  // UTC year "1970" is used as a base year to calculate the age
+  return Math.abs(ageInMilliseconds.getUTCFullYear() - 1970);
+};

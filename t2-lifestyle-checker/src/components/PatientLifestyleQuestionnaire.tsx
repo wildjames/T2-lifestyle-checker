@@ -47,7 +47,7 @@ const PatientLifestyleQuestionnaire: React.FC<
     "Do you exercise regularly?",
   ];
 
-  // I key this by letters rather than strings, for extensibility
+  // I key this by letters rather than strings like "16-25", for extensibility
   const scores: Scores = {
     A: { q1: 1, q2: 2, q3: 1 },
     B: { q1: 2, q2: 2, q3: 3 },
