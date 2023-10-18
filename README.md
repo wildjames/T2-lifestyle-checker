@@ -2,6 +2,8 @@
 
 A solution to the problem here: https://github.com/airelogic/tech-test-portal/tree/main/T2-Lifestyle-Checker
 
+The app is hosted using `gh-pages`, [here](https://wildjames.github.io/T2-lifestyle-checker/)! Please forgive my styling.
+
 For these kinds of interview-code-challenges, I generally keep some more stream-of-conciousness notes than I otherwise would. As I see it, the goal here is atypical - you want to see how I work and think, rather than for me to build something deployable, or that can be handed off to other developers. As such, these notes may be more casual than is normally acceptable! These notes will be [here](./notes.md)
 
 

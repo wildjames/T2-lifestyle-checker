@@ -98,3 +98,8 @@ Object.keys(ageBoundariesJson.ageBoundaries).forEach((group) => {
 
 console.log("Assigned age group: ", ageGroup);
 ```
+
+
+### Bonus: Hosting the app
+
+I've wanted to try out Github pages for a while, so I've deployed this app using that while I'm waiting for other code to compile. The process turned out to be reasonably easy, though I struggled a bit with correct routing - but honestly, that's typical for any time I try and host something online. Seems to be working, and is available [here](https://wildjames.github.io/T2-lifestyle-checker/), though I had to make the repo public to do this. Instead, I'll renew my github pro membership since when that comes in, I'll be able to host a private page.
