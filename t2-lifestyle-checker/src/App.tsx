@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './App.css';
 import PatientValidationForm from './components/PatientValidationForm';
 import PatientLifestyleQuestionnaire from './components/PatientLifestyleQuestionnaire';
 
@@ -12,7 +13,7 @@ function App() {
   };
 
   return (
-    <div className="App nhsuk-u-margin-5">
+    <div className="App nhsuk-u-margin-5 dev-container">
       <h1 className="nhsuk-heading-xl">T2 - Lifestyle Checker</h1>
       <div className="nhsuk-width-container">
         {!isPatientValidated ? (
