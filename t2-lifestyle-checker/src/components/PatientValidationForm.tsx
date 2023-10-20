@@ -14,9 +14,33 @@ const PatientValidationForm: React.FC<PatientValidationFormProps> = (props) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    // Resetting the error message at each new submission
     setErrorMessage("");
 
+    // First check the user inputs are valid
+    const validationErrors = validateInputs();
+    if (validationErrors) {
+      setErrorMessage(validationErrors);
+      return;
+    }
+
+    try {
+      // Fetch the patient data from the API, and ensure it matches the user inputs
+      const response = await fetchPatientData();
+      const isValidationSuccessful = comparePatientData(response);
+
+      // And handle the result
+      if (isValidationSuccessful) {
+        setErrorMessage("Validation successful");
+        props.onValidationSuccess(calculateAge(parseDate(response.data.born)));
+      } else {
+        setErrorMessage("Your details could not be found");
+      }
+    } catch (error: any) {
+      handleApiErrors(error);
+    }
+  };
+
+  const validateInputs = () => {
     // Check that the user has entered all the inputs
     if (!nhsNumber) {
       setErrorMessage("Please enter your NHS number");
@@ -31,69 +55,59 @@ const PatientValidationForm: React.FC<PatientValidationFormProps> = (props) => {
       return;
     }
 
-    // The NHS number is a 9-digit number. Strip out spaces, trim the string, and check this
-    const cleaned_nhsNumber = nhsNumber.replace(/\s/g, "").trim();
-    // Then use a quick bit of regex to ensure it's a 9-digit number
+    // Quick check that the NHS number is valid, or can be made valid.
+    const cleanedNhsNumber = nhsNumber.replace(/\s/g, "").trim();
     const nhsNumberRegex = /^\d{9}$/;
-    if (!nhsNumberRegex.test(cleaned_nhsNumber)) {
-      setErrorMessage("Please enter a valid NHS number");
-      return;
+    if (!nhsNumberRegex.test(cleanedNhsNumber)) {
+      return "Please enter a valid NHS number";
     }
 
-    try {
-      // Provide the API token in the header
-      // TODO: potentially worth moving to an /api/ folder and an axiosConfig file
-      const apiKey = process.env.REACT_APP_API_SUBSCRIPTION_KEY;
-      if (!apiKey) {
-        throw new Error("API subscription key not found");
-      }
-      axios.defaults.headers.common["Ocp-Apim-Subscription-Key"] = apiKey;
+    // Check that the user is at least 16 years old
+    const userDob = new Date(dob);
+    if (calculateAge(userDob) < 16) {
+      return "You are not eligible for this service";
+    }
+  };
 
-      const response = await axios.get(
-        `https://al-tech-test-apim.azure-api.net/tech-test/t2/patients/${nhsNumber}`
-      );
+  const fetchPatientData = async () => {
+    /// Fetch the patient data from the API. Returns the response object.
+    const apiKey = process.env.REACT_APP_API_SUBSCRIPTION_KEY;
+    if (!apiKey) {
+      throw new Error("API subscription key not found");
+    }
+    axios.defaults.headers.common["Ocp-Apim-Subscription-Key"] = apiKey;
 
-      const response_surname = response.data.name
-        .split(",")[0]
-        .trim()
-        .toUpperCase();
-      // Since dates in less civilised countries are yyyy-mm-dd, we need to parse the date from UK format.
-      const response_dob = parseDate(response.data.born);
+    const response = await axios.get(
+      `https://al-tech-test-apim.azure-api.net/tech-test/t2/patients/${nhsNumber}`
+    );
+    return response;
+  };
 
-      const user_surname = surname.trim().toUpperCase();
-      const user_dob = new Date(dob);
+  const comparePatientData = (response: any) => {
+    /// Compare the user inputs with the response from the API. 
+    /// Also check that the patient is at least 16 years old.
+    /// Returns true if the data is okay, false otherwise.
+    const responseSurname = response.data.name
+      .split(",")[0]
+      .trim()
+      .toUpperCase();
+    const responseDob = parseDate(response.data.born);
 
-      const user_age = calculateAge(response_dob);
-      console.log("The user reports being " + user_age + " years old");
+    const userSurname = surname.trim().toUpperCase();
+    const userDob = new Date(dob);
 
-      // Check the response data matches the inputted data
-      if (
-        // Does the name match?
-        response_surname !== user_surname ||
-        // Does the DOB match?
-        response_dob.toLocaleDateString() !== user_dob.toLocaleDateString()
-      ) {
-        setErrorMessage("Your details could not be found");
-        if (response_surname !== user_surname) {
-          console.log("Surname mismatch");
-        }
-        if (response_dob !== user_dob) {
-          console.log("DOB mismatch");
-        }
-      } else if (user_age < 16) {
-        setErrorMessage("You are not eligible for this service");
-      } else {
-        console.log(response);
-        // Proceed to the next part (Lifestyle Questions)
-        setErrorMessage("Validation successful");
-        props.onValidationSuccess(user_age);
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 404) {
-        setErrorMessage("Your details could not be found");
-      } else {
-        setErrorMessage("An unexpected error occurred");
-      }
+    return (
+      responseSurname === userSurname &&
+      responseDob.toLocaleDateString() === userDob.toLocaleDateString() &&
+      calculateAge(responseDob) >= 16
+    );
+  };
+
+  const handleApiErrors = (error: any) => {
+    if (error.response && error.response.status === 404) {
+      setErrorMessage("Your details could not be found");
+    } else {
+      setErrorMessage("An unexpected error occurred");
     }
   };
 
